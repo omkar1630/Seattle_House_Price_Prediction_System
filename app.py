@@ -8,7 +8,7 @@ with open("KNNRG.pkl", "rb") as file:
 
 # Page Config
 st.set_page_config(
-    page_title="HomeValue AI",
+    page_title="Seattle House Price Prediction System",
     page_icon="🏠",
     layout="wide"
 )
@@ -17,77 +17,73 @@ st.set_page_config(
 st.markdown("""
 <style>
 .main {
-    background-color: #f5f7fa;
+    background-color: #f4f8fb;
 }
 
 .title {
-    text-align:center;
-    color:#1E3A8A;
-    font-size:42px;
-    font-weight:bold;
+    text-align: center;
+    font-size: 42px;
+    font-weight: bold;
+    color: #0F4C81;
 }
 
 .subtitle {
-    text-align:center;
-    color:#555;
-    font-size:18px;
-    margin-bottom:25px;
+    text-align: center;
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 20px;
 }
 
-.metric-box {
-    background:#ffffff;
-    padding:15px;
-    border-radius:15px;
-    box-shadow:0px 2px 10px rgba(0,0,0,0.1);
+.prediction-box {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
 }
 
-.stButton>button {
-    width:100%;
-    background:linear-gradient(90deg,#2563EB,#1D4ED8);
-    color:white;
-    border:none;
-    border-radius:10px;
-    height:3em;
-    font-size:18px;
-    font-weight:bold;
-}
-
-.result {
-    padding:20px;
-    border-radius:15px;
-    text-align:center;
-    font-size:30px;
-    font-weight:bold;
-    background:#DCFCE7;
-    color:#166534;
+.stButton > button {
+    width: 100%;
+    background: linear-gradient(90deg,#0F4C81,#1E88E5);
+    color: white;
+    border-radius: 10px;
+    font-size: 18px;
+    height: 3em;
+    border: none;
 }
 </style>
 """, unsafe_allow_html=True)
 
 # Header
-st.markdown('<div class="title">🏠 HomeValue AI</div>',
-            unsafe_allow_html=True)
+st.markdown(
+    '<div class="title">🏠 Seattle House Price Prediction System</div>',
+    unsafe_allow_html=True
+)
 
 st.markdown(
-    '<div class="subtitle">Seattle House Price Prediction System using KNN Regression</div>',
+    '<div class="subtitle">Predict house prices using Machine Learning (KNN Regression)</div>',
     unsafe_allow_html=True
 )
 
 st.markdown("---")
 
-# Inputs
+# Input Section
+st.subheader("📋 Property Information")
+
 col1, col2 = st.columns(2)
 
 with col1:
     beds = st.number_input(
-        "🛏 Number of Bedrooms",
+        "🛏 Bedrooms",
         min_value=1,
         max_value=20,
         value=3
     )
 
     baths = st.number_input(
-        "🛁 Number of Bathrooms",
+        "🛁 Bathrooms",
         min_value=1.0,
         max_value=20.0,
         value=2.0
@@ -96,7 +92,6 @@ with col1:
     size = st.number_input(
         "📐 House Size (sq ft)",
         min_value=200,
-        max_value=20000,
         value=2000
     )
 
@@ -104,14 +99,12 @@ with col2:
     lot_size = st.number_input(
         "🌳 Lot Size (sq ft)",
         min_value=500,
-        max_value=100000,
         value=5000
     )
 
     zip_code = st.number_input(
         "📍 Zip Code",
         min_value=10000,
-        max_value=99999,
         value=98101
     )
 
@@ -119,7 +112,7 @@ st.markdown("")
 
 if st.button("💰 Predict House Price"):
 
-    features = np.array([[
+    input_data = np.array([[
         beds,
         baths,
         size,
@@ -127,13 +120,13 @@ if st.button("💰 Predict House Price"):
         zip_code
     ]])
 
-    prediction = model.predict(features)[0]
+    prediction = model.predict(input_data)[0]
 
     st.markdown(
         f"""
-        <div class="result">
-        Estimated House Price<br>
-        💵 ${prediction:,.2f}
+        <div class="prediction-box">
+            Estimated House Price<br><br>
+            💵 ${prediction:,.2f}
         </div>
         """,
         unsafe_allow_html=True
@@ -142,5 +135,5 @@ if st.button("💰 Predict House Price"):
 st.markdown("---")
 
 st.info(
-    "Enter property details to estimate the house price using a K-Nearest Neighbors Regression model."
+    "Enter the property details above and click Predict House Price to estimate the market value."
 )
